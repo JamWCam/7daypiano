@@ -340,6 +340,7 @@ nav {
 .feature-icon {
     font-size: 2rem;
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 .feature-icon.tablet-preview {
