@@ -100,8 +100,9 @@ nav {
 }
 
 .logo-icon {
-    font-size: 1.5rem;
-    color: var(--color-accent);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .nav-links {
