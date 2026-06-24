@@ -1,167 +1,718 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jam With Cam's Piano Chord Teacher</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>7 Day Piano — Learn Your First Real Song in a Week</title>
+<meta name="description" content="Guitarists: learn piano the chord-first way. Watch the method work, then join the next 8-week coaching cohort with Cam." />
+
+<!-- ============================================================
+     JAM WITH CAM — COACHING FUNNEL LANDING PAGE
+     One job: turn warm visitors into coaching inquiries.
+
+     >>> THINGS YOU EDIT <<<
+     1. The three YouTube video IDs  -> search for  PLACEHOLDER_YT_ID
+        Replace each data-yt="PLACEHOLDER_YT_ID_x" with the real
+        YouTube video ID (the part after watch?v= ).
+        Later: swap slots 1 & 2 for quick-win clips and drop the
+        60-min webinar into slot 3 — the slot is already labelled
+        "Deeper Dive" and ready for it.
+     2. Email, prices, cohort date are already wired to your real
+        values. Search EDIT: to find any you might want to change.
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --bg:#0d0d0f;
+    --bg-raise:#16161a;
+    --bg-card:#1b1b20;
+    --ink:#f4f3f0;
+    --ink-soft:#b9b7b1;
+    --ink-faint:#7d7b77;
+    --blue:#7ec8e3;
+    --purple:#ae8cf4;
+    --orange:#ff9a4d; /* retired in favor of --purple; kept for reference */
+    --line:rgba(255,255,255,.08);
+    --line-strong:rgba(255,255,255,.14);
+    --serif:"DM Serif Display",Georgia,serif;
+    --sans:"Outfit",system-ui,sans-serif;
+    --maxw:1080px;
+    --radius:18px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    text-wrap:pretty;
+  }
+  /* Headlines get the tighter balancing algorithm so multi-line titles
+     distribute evenly instead of stranding short last lines. */
+  h1,h2,.site-title,.hero-sub,.promise,.lede,.bridge-close{text-wrap:balance}
+
+  /* grain overlay */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    pointer-events:none;z-index:1;
+    opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:2}
+
+  /* ---------- header ---------- */
+  header{padding:28px 0 8px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .badge{
+    width:54px;height:54px;border-radius:13px;
+    overflow:hidden;flex:none;
+    box-shadow:0 0 0 1px rgba(255,255,255,.12), 0 6px 18px -8px rgba(0,0,0,.6);
+  }
+  .badge img{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* ---------- hero ---------- */
+  .hero{padding:46px 0 18px;text-align:center;max-width:760px;margin:0 auto}
+  .eyebrow{
+    font-size:.74rem;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--purple);font-weight:600;margin-bottom:22px;
+  }
+  .site-title{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(3rem,8vw,5.4rem);line-height:1;
+    letter-spacing:-1px;margin-bottom:14px;color:var(--ink);
+  }
+  .promise{
+    font-family:var(--sans);font-weight:500;
+    font-size:clamp(1.15rem,2.8vw,1.6rem);color:var(--blue);
+    letter-spacing:.01em;margin-bottom:0;
+  }
+  .audience-block{margin:42px 0 38px}
+  .audience{
+    font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--purple);font-weight:500;line-height:1.9;opacity:.92;margin:0;
+  }
+  .hero-sub{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(1.7rem,4.4vw,3rem);line-height:1.08;
+    letter-spacing:-.5px;margin-bottom:22px;color:var(--ink);
+  }
+  .hero-sub em{font-style:italic;color:var(--blue)}
+  .arc-you{
+    position:relative;display:inline-block;white-space:nowrap;
+    padding-bottom:.18em;
+  }
+  .arc-you::after{
+    content:"";position:absolute;left:-6%;right:-6%;bottom:-.04em;height:.42em;
+    background:no-repeat center/100% 100%;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 18' preserveAspectRatio='none'%3E%3Cpath d='M3 5 Q50 22 97 5' fill='none' stroke='%237ec8e3' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+  .lede{font-size:clamp(1.05rem,2.2vw,1.28rem);color:var(--ink-soft);max-width:600px;margin:0 auto;font-weight:300}
+  .lede-em{font-style:italic;color:var(--purple);font-weight:700}
+
+  /* ---------- video rail ---------- */
+  .proof{padding:46px 0 8px}
+
+  /* grouped labels: span-2 over the quick-win pair, single over deep dive */
+  .rail-labels{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:14px;
+  }
+  .rail-label{
+    display:flex;align-items:center;gap:14px;
+    font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin:0;line-height:1.4;
+    white-space:nowrap;
+  }
+  .rail-label::before,
+  .rail-label::after{
+    content:"";flex:1 1 auto;height:2px;
+    background:linear-gradient(90deg,transparent,var(--blue),transparent);
+  }
+  .rail-label.span2{grid-column:span 2}
+
+  .rail{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .vid{
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;
+    transition:border-color .25s,transform .25s,box-shadow .25s;
+  }
+  .vid:hover{
+    border-color:rgba(183,148,246,.4);
+    transform:translateY(-4px);
+    box-shadow:0 18px 40px -20px rgba(183,148,246,.35);
+  }
+  .vid-frame{position:relative;aspect-ratio:9/16;background:#000}
+  .vid-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vid-meta{padding:16px 18px 20px}
+  .vid-tag{
+    font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--blue);font-weight:600;margin-bottom:7px;display:block;
+  }
+  .vid-tag.deep{color:var(--blue)}
+  .vid-title{font-family:var(--serif);font-size:1.12rem;line-height:1.2}
+  .vid-note{font-size:.86rem;color:var(--ink-faint);margin-top:6px}
+
+  /* ---------- video overlay (custom thumbnail) ---------- */
+  .vid-overlay{
+    position:absolute;inset:0;z-index:2;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:22px;padding:26px 18px;text-align:center;
+    background:linear-gradient(180deg,#15151a 0%,#0e0e12 100%);
+  }
+  .ov-caption{
+    font-size:1.05rem;line-height:1.45;color:var(--ink-soft);
+    font-weight:400;max-width:24ch;margin:0;
+  }
+  .ov-logo{
+    width:84px;height:84px;border-radius:20px;overflow:hidden;
+    box-shadow:0 0 0 1px rgba(255,255,255,.12),0 8px 22px -10px rgba(0,0,0,.7);
+  }
+  .ov-logo img{width:100%;height:100%;object-fit:cover;display:block}
+  .ov-icon{width:120px;height:96px;display:grid;place-items:center}
+  .ov-icon svg{width:120px;height:96px}
+  .ov-play{
+    width:62px;height:62px;border-radius:50%;border:0;cursor:pointer;
+    background:var(--blue);color:#0d0d0f;display:grid;place-items:center;
+    box-shadow:0 8px 24px -8px rgba(126,200,227,.7);
+    transition:transform .18s,box-shadow .18s,background .18s;
+  }
+  .ov-play svg{width:26px;height:26px;margin-left:3px}
+  .ov-play:hover{transform:scale(1.08);background:#9ad6ec;
+                 box-shadow:0 10px 30px -8px rgba(126,200,227,.9)}
+  .ov-construction{
+    margin:0;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;
+    font-weight:700;color:#8a8782;
+  }
+  .ov-play-disabled{
+    background:#3a3a40;color:#7d7b77;cursor:not-allowed;
+    box-shadow:none;
+  }
+  .ov-play-disabled:hover{transform:none;background:#3a3a40;box-shadow:none}
+
+  /* neon treatment — deep-dive slot only */
+  .vid-frame.neon .vid-overlay{
+    background:radial-gradient(120% 90% at 50% 38%,#16202a 0%,#0c0f14 70%);
+  }
+  .ov-caption-neon{
+    color:var(--blue);font-weight:600;
+    text-shadow:0 0 6px rgba(126,200,227,.85),0 0 16px rgba(126,200,227,.5),0 0 30px rgba(126,200,227,.3);
+  }
+  .vid-frame.neon .ov-icon{color:var(--blue)}
+  .vid-frame.neon .ov-icon svg{
+    filter:drop-shadow(0 0 4px rgba(126,200,227,.9)) drop-shadow(0 0 12px rgba(126,200,227,.55)) drop-shadow(0 0 24px rgba(126,200,227,.3));
+  }
+  @media(prefers-reduced-motion:no-preference){
+    .vid-frame.neon .ov-caption-neon,
+    .vid-frame.neon .ov-icon svg{animation:neonPulse 2.8s ease-in-out infinite}
+  }
+  @keyframes neonPulse{
+    0%,100%{opacity:1}
+    50%{opacity:.78}
+  }
+
+  /* ---------- bridge / the gap ---------- */
+  .bridge{padding:64px 0 8px;max-width:680px;margin:0 auto;text-align:center}
+  .bridge h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin-bottom:20px;
+  }
+  .bridge-q{
+    font-size:clamp(1.5rem,3.4vw,2.1rem)!important;
+    line-height:1.28!important;
+  }
+  .bridge p{color:var(--ink-soft);font-size:1.08rem}
+  .bridge p + p{margin-top:16px}
+  .bridge .pull{color:var(--ink);font-weight:400}
+  .bridge .yes{color:var(--purple);font-weight:700;letter-spacing:.02em}
+  .bridge-close{
+    color:var(--ink);font-weight:400;font-size:1.18rem;
+    margin-top:28px;padding-top:4px;
+  }
+
+  /* ---------- offer ---------- */
+  .offer{padding:58px 0 20px}
+  .offer-head{text-align:center;max-width:640px;margin:0 auto 14px}
+  .offer-head .eyebrow{color:var(--blue)}
+  .offer-head h2{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin-bottom:14px;
+  }
+  .offer-outcomes{
+    font-size:clamp(1.5rem,3.4vw,2.1rem)!important;
+    line-height:1.28!important;color:var(--ink);
+  }
+  .offer-head p{color:var(--ink-soft)}
+
+  .cohort-strip{
+    display:inline-flex;align-items:center;gap:12px;margin:22px auto 0;
+    padding:10px 20px;border:1px solid var(--line-strong);border-radius:999px;
+    font-size:.9rem;color:var(--ink-soft);
+  }
+  .cohort-strip b{color:var(--ink);font-weight:600}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);
+       box-shadow:0 0 0 4px rgba(126,200,227,.18);flex:none}
+
+  .tiers{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:46px}
+  .tier{
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:24px;padding:34px 32px 32px;display:flex;flex-direction:column;
+    position:relative;
+  }
+  /* shared badge shell for both tiers */
+  .tier::before{
+    position:absolute;top:-12px;left:32px;
+    color:#0d0d0f;font-size:.7rem;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;padding:5px 13px;border-radius:999px;
+  }
+  /* Group tier: purple identity */
+  .tier:not(.feature){border-color:rgba(183,148,246,.4)}
+  .tier:not(.feature)::before{content:"More Collaborative";background:var(--purple)}
+  /* One-on-One tier: blue identity */
+  .tier.feature{border-color:rgba(126,200,227,.45)}
+  .tier.feature::before{content:"Most Access";background:var(--blue)}
+  .tier-name{font-family:var(--serif);font-size:1.5rem;margin-bottom:4px}
+  .tier-limit{
+    display:inline-block;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:800;color:var(--purple);border:1px solid rgba(183,148,246,.4);
+    border-radius:999px;padding:3px 11px;margin-bottom:14px;
+  }
+  .tier.feature .tier-limit{color:var(--blue);border-color:rgba(126,200,227,.45)}
+  .tier-for{font-size:.86rem;color:var(--ink-faint);margin-bottom:24px}
+  .stack{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:26px}
+  .stack li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+            padding-bottom:14px;border-bottom:1px dashed var(--line);font-size:.96rem}
+  .stack li:last-child{border-bottom:0;padding-bottom:0}
+  .stack .label{color:var(--ink);font-weight:300}
+  .stack .label b{font-weight:600}
+  .stack .val{color:var(--ink-faint);font-size:.86rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+  /* Group tier (base .tier): purple accents */
+  .tier .stack .perk .label b{color:var(--purple)}
+  .tier .stack .perk .val{color:var(--purple);font-weight:600;font-size:.82rem;letter-spacing:.02em}
+  /* One-on-One tier (.feature): blue accents override */
+  .tier.feature .stack .exclusive .label b{color:var(--blue)}
+  .tier.feature .stack .perk .label b{color:var(--blue)}
+  .tier.feature .stack .perk .val{color:var(--blue);font-weight:600;font-size:.82rem;letter-spacing:.02em}
+
+  .tier-total{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:16px 0;border-top:1px solid var(--line-strong);
+    color:var(--ink-soft);font-size:.92rem;
+  }
+  .tier-total .sum{font-variant-numeric:tabular-nums}
+  .tier-price{display:flex;align-items:baseline;gap:10px;margin:6px 0 4px}
+  .tier-price .now{font-family:var(--serif);font-size:2.6rem;color:var(--ink)}
+  .tier-price .cur{font-size:.9rem;color:var(--ink-faint);letter-spacing:.1em}
+  .tier-fine{font-size:.82rem;color:var(--ink-faint);margin-bottom:24px}
+
+  .cta{
+    margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    background:var(--blue);color:#0d0d0f;font-family:var(--sans);font-weight:600;
+    font-size:1.02rem;padding:16px 24px;border-radius:999px;border:0;cursor:pointer;
+    text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s;
+  }
+  .cta:hover{transform:translateY(-2px);background:#9ad6ec;
+             box-shadow:0 14px 30px -12px rgba(183,148,246,.6)}
+  .cta.purple{background:var(--purple);color:#0d0d0f}
+  .cta.purple:hover{background:#c9aefb;box-shadow:0 14px 30px -12px rgba(126,200,227,.5)}
+  .cta.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line-strong)}
+  .cta.ghost:hover{background:rgba(255,255,255,.04);border-color:var(--blue);box-shadow:none}
+  .cta svg{width:17px;height:17px}
+
+  /* ============================================================
+     WHITE-CARD TOGGLE
+     To turn ON  : add class "tiers-light" to <div class="tiers"> in the markup.
+     To turn OFF : remove "tiers-light"  -> reverts to the dark cards.
+     Deepened accent shades keep group=purple / one-on-one=blue identity
+     legible on white (the light shades wash out on white).
+     ============================================================ */
+  .tiers-light{
+    --blue-on-light:#7ec8e3;     /* site light blue, used everywhere */
+    --purple-on-light:#ae8cf4;   /* the one purple, used everywhere */
+  }
+  .tiers-light .tier{
+    background:#ffffff;border-color:rgba(0,0,0,.12);
+  }
+  .tiers-light .tier:not(.feature){border-color:rgba(107,63,212,.45)}
+  .tiers-light .tier.feature{border-color:rgba(31,127,166,.5)}
+  /* badges already use dark text on a colored fill — keep them, but use deeper fills */
+  .tiers-light .tier:not(.feature)::before{background:var(--purple-on-light);color:#0d0d0f}
+  .tiers-light .tier.feature::before{background:var(--blue-on-light);color:#0d0d0f}
+  /* body + structural text -> black/greys on white */
+  .tiers-light .tier-name{color:#141417}
+  .tiers-light .tier-for{color:#5a5a5f}
+  .tiers-light .stack .label{color:#1c1c20}
+  .tiers-light .stack .val{color:#6a6a70}
+  .tiers-light .stack li{border-bottom-color:rgba(0,0,0,.12)}
+  .tiers-light .tier-total{color:#3a3a40;border-top-color:rgba(0,0,0,.18)}
+  .tiers-light .tier-price .now{color:#141417}
+  .tiers-light .tier-price .cur{color:#6a6a70}
+  .tiers-light .tier-fine{color:#6a6a70}
+  /* spot-limit pills -> deepened accent */
+  .tiers-light .tier-limit{color:var(--purple-on-light);border-color:rgba(107,63,212,.4)}
+  .tiers-light .tier.feature .tier-limit{color:var(--blue-on-light);border-color:rgba(31,127,166,.45)}
+  /* colored highlights -> deepened so they read on white, identity preserved */
+  .tiers-light .tier .stack .perk .label b,
+  .tiers-light .tier .stack .perk .val{color:var(--purple-on-light)}
+  .tiers-light .tier.feature .stack .exclusive .label b,
+  .tiers-light .tier.feature .stack .perk .label b,
+  .tiers-light .tier.feature .stack .perk .val{color:var(--blue-on-light)}
+  /* buttons: colored fills with black text for readability */
+  .tiers-light .cta.purple{background:var(--purple-on-light);color:#0d0d0f}
+  .tiers-light .cta.purple:hover{background:#c2a6f7}
+  .tiers-light .tier.feature .cta{background:var(--blue-on-light);color:#0d0d0f}
+  .tiers-light .tier.feature .cta:hover{background:#9ad6ec}
+
+  /* ---------- final ask ---------- */
+  .final{padding:70px 0 40px;text-align:center;max-width:620px;margin:0 auto}
+  .final h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4.5vw,2.7rem);
+            line-height:1.1;margin-bottom:18px}
+  .final p{color:var(--ink-soft);margin-bottom:30px;font-size:1.06rem}
+  .final .cta{padding:18px 34px;font-size:1.08rem}
+  .final-fine{margin-top:18px;font-size:.85rem;color:var(--ink-faint)}
+  .partner-line{margin-top:26px;font-size:.92rem;color:var(--ink-faint)}
+  .partner-line a{color:var(--purple);text-decoration:none;border-bottom:1px solid rgba(183,148,246,.4)}
+  .partner-line a:hover{color:var(--blue);border-bottom-color:var(--blue)}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:30px 0 50px;margin-top:30px}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .foot-row small{color:var(--ink-faint);font-size:.82rem}
+  .foot-mail{color:var(--blue);text-decoration:none;font-size:.9rem}
+  .foot-mail:hover{color:var(--purple)}
+  .foot-links{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .foot-link{color:var(--ink-faint);text-decoration:none;font-size:.85rem}
+  .foot-link:hover{color:var(--blue)}
+  .foot-sep{color:var(--ink-faint);font-size:.8rem}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:860px){
+    .rail{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+    .rail-labels{grid-template-columns:1fr;max-width:380px;margin:0 auto 6px}
+    .rail-label.span2{grid-column:span 1}
+    .rail-label{align-self:center;margin-bottom:6px}
+    .vid-frame{aspect-ratio:16/10}
+    .tiers{grid-template-columns:1fr}
+    .tier::before{left:50%;transform:translateX(-50%)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none!important;scroll-behavior:auto!important}
+  }
+  :focus-visible{outline:2px solid var(--purple);outline-offset:3px;border-radius:6px}
+</style>
 </head>
 <body>
-    <div class="grain-overlay"></div>
-    
-    <header>
-        <nav>
-            <div class="logo">
-                <img src="jwc-logo.png" alt="JWC Logo" class="logo-icon">
-                <span class="logo-text">Jam With Cam's Piano Chord Teacher</span>
-            </div>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#how-it-works">How It Works</a>
-                <a href="privacy-policy.html">Privacy</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </nav>
-    </header>
 
-    <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Learn Piano Chords<br><span class="highlight">The Interactive Way</span></h1>
-                <p class="tagline">Type any chord. See it on the keyboard. Hear how it sounds. It's that simple.</p>
-                <a href="https://apps.apple.com/ca/app/jwc-piano-chord-teacher/id6756279798" class="cta-button" target="_blank">
-                    <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                    </svg>
-                    Download on the App Store
-                </a>
-            </div>
-        <div class="hero-visual">
-                <div class="piano-snippet">
-                    <div class="piano-key white highlighted"><span>C</span></div>
-                    <div class="piano-key black"></div>
-                    <div class="piano-key white"></div>
-                    <div class="piano-key black"></div>
-                    <div class="piano-key white highlighted"><span>E</span></div>
-                    <div class="piano-key white"></div>
-                    <div class="piano-key black"></div>
-                    <div class="piano-key white highlighted"><span>G</span></div>
-                    <div class="piano-key black"></div>
-                    <div class="piano-key white"></div>
-                    <div class="piano-key black"></div>
-                    <div class="piano-key white"></div>
-                </div>
-            </div>
-        </section>
+<!-- ===================== HERO ===================== -->
+<section class="hero wrap">
+  <h1 class="site-title">7 Day Piano</h1>
+  <p class="promise">Learn your first REAL song in only one week</p>
+  <div class="audience-block">
+    <p class="audience">For guitarists who want to actually play piano</p>
+    <p class="audience">For sight readers desiring the freedom to 'JAM'</p>
+    <p class="audience">For "BAD readers" who always wished there was a better way</p>
+  </div>
+  <h2 class="hero-sub">Don't take our word for it.<br><em>Watch the method work for <span class="arc-you">YOU</span></em></h2>
+  <p class="lede">People who actually <em class="lede-em">play along</em> with the videos below are the ones who discover that it works, with their own hands. Doers rule. Watchers&nbsp;drool.</p>
+</section>
 
-        <section id="how-it-works" class="workflow">
-            <h2>Three Steps to Chord Mastery</h2>
-            <p class="section-intro">No complicated menus. No endless tutorials. Just type, see, and play.</p>
-            
-            <div class="steps-container">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-image-container">
-                        <img src="Type_Chords.PNG" alt="Type any chord name and the app recognizes it instantly">
-                    </div>
-                    <h3>Type Chords</h3>
-                    <p>Enter any chord symbol - from simple majors to complex jazz voicings. The app understands real chord notation.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-image-container">
-                        <img src="See_Chords.PNG" alt="See the chord highlighted on a piano keyboard">
-                    </div>
-                    <h3>See Chords</h3>
-                    <p>Watch the notes light up on an interactive keyboard. See inversions, voicings, and bass notes clearly labeled.</p>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-image-container">
-                        <img src="Playback_Chords.PNG" alt="Play back the chord with different instrument sounds">
-                    </div>
-                    <h3>Play Chords</h3>
-                    <p>Hear your chord with authentic sounds - Piano, Rhodes, Organ, or Van Halen-style synth. Train your ear while you learn.</p>
-                </div>
-            </div>
-        </section>
+<!-- ===================== PROOF VIDEOS ===================== -->
+<section class="proof wrap">
 
-        <section id="features" class="features">
-            <h2>Built for Real Musicians</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎹</div>
-                    <h3>Multiple Keyboard Sounds</h3>
-                    <p>Piano, Rhodes, Organ, and Synth - hear chords the way you'll play them.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Inversion Cycling</h3>
-                    <p>Tap through root position, first, second, and third inversions instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎵</div>
-                    <h3>Bass Note Labels</h3>
-                    <p>Always know where your root is - essential for understanding chord voicings.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">▶️</div>
-                    <h3>Play for Free</h3>
-                    <p>Students and beginners can load lesson files from their teacher, watch chords play back, and see every note position - completely free.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎓</div>
-                    <h3>Affordably Learn & Create</h3>
-                    <p>For a price lower than your favorite media streaming service, master piano chording, learn origins and functions of chord names, and transform dull arrangements into masterpieces worth sharing.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon tablet-preview">
-                        <img src="Playback_Chords.PNG" alt="App in landscape mode on tablet">
-                    </div>
-                    <h3>Tablet Optimized</h3>
-                    <p>Landscape layout designed for learning at the piano or on the couch.</p>
-                </div>
-            </div>
-        </section>
+  <!-- grouped labels: one over the quick-win pair, one over the deep dive -->
+  <div class="rail-labels">
+    <p class="rail-label span2">Quick Win Videos</p>
+    <p class="rail-label">A deep dive…</p>
+  </div>
 
-        <section class="cta-section">
-            <h2>Start Learning Today</h2>
-            <p>Join musicians who are mastering chords the intuitive way.</p>
-            <a href="https://apps.apple.com/ca/app/jwc-piano-chord-teacher/id6756279798" class="cta-button" target="_blank">
-                <svg class="apple-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-                Get it on the App Store
-            </a>
-        </section>
+  <div class="rail">
 
-        <section id="contact" class="contact-section">
-            <h2>Contact Us</h2>
-            <p>Have questions, feedback, or need help? We'd love to hear from you.</p>
-            <a href="mailto:jamwcam@smokeshadow.net" class="contact-button">
-                ✉️ Email Us
-            </a>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="jwc-logo.png" alt="JWC Logo" class="logo-icon">
-                <span>Jam With Cam's Piano Chord Teacher</span>
-            </div>
-            <div class="footer-links">
-                <a href="privacy-policy.html">Privacy Policy</a>
-                <a href="mailto:jamwcam@smokeshadow.net">Contact</a>
-            </div>
-            <p class="copyright">© 2025 Jam With Cam. All rights reserved.</p>
+    <!-- VIDEO 1 — Quick Win: When I Was Your Man intro -->
+    <article class="vid">
+      <div class="vid-frame" data-yt="z6VonMKY87k" data-title="When I Was Your Man — intro">
+        <div class="vid-overlay">
+          <p class="ov-caption">This video demos the Jam With Cam Piano Chord Teacher app</p>
+          <div class="ov-logo"><img src="jwc-logo-square.png" alt="Jam With Cam app icon" /></div>
+          <button class="ov-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
         </div>
-    </footer>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">Quick win</span>
+        <h3 class="vid-title">The first 3 chords of "When I Was Your Man"</h3>
+        <p class="vid-note">Barely any hand movement. A real song, in under two minutes.</p>
+      </div>
+    </article>
+
+    <!-- VIDEO 2 — Quick Win: 12-bar blues in F -->
+    <article class="vid">
+      <div class="vid-frame" data-yt="U22RaWTJeB0" data-title="12-bar blues in F">
+        <div class="vid-overlay">
+          <p class="ov-caption">This video demos the Jam With Cam Piano Chord Teacher app</p>
+          <div class="ov-logo"><img src="jwc-logo-square.png" alt="Jam With Cam app icon" /></div>
+          <button class="ov-play" aria-label="Play video">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag">Quick win</span>
+        <h3 class="vid-title">The 12-bar blues in F — one shape, many songs</h3>
+        <p class="vid-note">Hear it choppy as roots, then smooth once you invert.</p>
+      </div>
+    </article>
+
+    <!-- VIDEO 3 — Deep dive: the 60-min webinar (neon overlay) -->
+    <article class="vid">
+      <div class="vid-frame neon" data-yt="PLACEHOLDER_YT_ID_3" data-title="A deeper dive into the chord-first method">
+        <div class="vid-overlay">
+          <p class="ov-caption ov-caption-neon">A deeper dive into the chord-first method</p>
+          <div class="ov-icon">
+            <!-- open book -->
+            <svg viewBox="0 0 64 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 40c7.5-4 16.5-4 26 0 9.5-4 18.5-4 26 0" />
+              <path d="M6 40V12c7.5-4 16.5-4 26 0v28" />
+              <path d="M58 40V12c-7.5-4-16.5-4-26 0v28" />
+            </svg>
+          </div>
+          <p class="ov-construction">Under Construction</p>
+          <button class="ov-play ov-play-disabled" aria-label="Video coming soon" disabled>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="vid-meta">
+        <span class="vid-tag deep">A deep dive</span>
+        <h3 class="vid-title">The chord-first method, fully explained</h3>
+        <p class="vid-note">For the thoughtful buyer who wants the whole picture before deciding.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ===================== THE GAP / BRIDGE ===================== -->
+<section class="bridge wrap">
+  <h2 class="bridge-q">You just watched the whole system. Is coaching still necessary?</h2>
+  <p class="pull"><b class="yes">YES!</b> Because knowing the system and <em>becoming the player</em> are two different things.</p>
+  <p>The quick wins are real — you can take them and run. But most people who learn a method from a video never finish what they started. Not from lack of effort. They get stuck mid-song with no one to ask, no structured path, and no feedback on whether their hands are actually doing the right thing.</p>
+  <p class="bridge-close">That gap is exactly what eight weeks with me is built to close.</p>
+</section>
+
+<!-- ===================== OFFER ===================== -->
+<section class="offer wrap" id="offer">
+  <div class="offer-head">
+    <p class="eyebrow">The 8-week coaching program</p>
+    <h2 class="offer-outcomes">Explode Your Repertoire<br>Master Every Chord In Context<br>Become a Certified Chording Pianist</h2>
+    <p>Two ways in. Same destination — the <b>Jam With Cam Piano Chord Master</b> certification. The difference is how much of me you get, and how much that improves your odds of finishing.</p>
+    <div class="cohort-strip">
+      <span class="dot"></span>
+      <span>Next cohort: <b>1st week of July&nbsp;2026</b> · pre-registration required — secure your spot before doors&nbsp;close</span>
+    </div>
+  </div>
+
+  <div class="tiers tiers-light">
+
+    <!-- GROUP TIER -->
+    <article class="tier">
+      <h3 class="tier-name">Group Cohort</h3>
+      <p class="tier-limit">10 Spot Limit</p>
+      <p class="tier-for">For self-starters who do well with a room around them</p>
+      <ul class="stack">
+        <li><span class="label">Weekly <b>live group coaching</b> calls — 8 weeks</span><span class="val">$1,200</span></li>
+        <li class="perk"><span class="label"><b>Students choose their own songs</b> — you pick what you learn</span><span class="val">FREE by design!</span></li>
+        <li><span class="label">The complete <b>JWC chord curriculum</b> — every chord type in real musical context</span><span class="val">$250</span></li>
+        <li><span class="label">Personal <b>video feedback</b> on your playing submissions</span><span class="val">$400</span></li>
+        <li><span class="label"><b>Lifetime JWC app access</b> — yours to keep, well beyond the program</span><span class="val">$197</span></li>
+        <li><span class="label"><b>Cohort community</b> access</span><span class="val">Included</span></li>
+        <li><span class="label">Final <b>performance review</b> + certification</span><span class="val">$200</span></li>
+      </ul>
+      <div class="tier-total"><span>If bought separately</span><span class="sum">$2,247</span></div>
+      <div class="tier-price"><span class="now">$997</span><span class="cur">USD</span></div>
+      <p class="tier-fine">One payment. Ask about plans when you inquire.</p>
+      <!-- EDIT: email + subject/body prefilled below -->
+      <a class="cta purple" href="mailto:jamwcam@smokeshadow.net?subject=Group%20Cohort%20%E2%80%94%20July%202026&body=Hi%20Cam%2C%20I'd%20like%20to%20join%20the%20July%202026%20group%20cohort.%20Please%20send%20me%20the%20details%20and%20payment%20options.%0A%0A(Tell%20me%20a%20bit%20about%20where%20you're%20at%20on%20piano%2Fguitar%20so%20I%20can%20reply%20usefully.)">
+        Inquire about the group cohort
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </article>
+
+    <!-- INDIVIDUAL TIER -->
+    <article class="tier feature">
+      <h3 class="tier-name">One-on-One</h3>
+      <p class="tier-limit">3 Spot Limit</p>
+      <p class="tier-for">For people who want the best odds of finishing — and my phone number</p>
+      <ul class="stack">
+        <li><span class="label"><b>Eight private 1-hour sessions</b> — just you and me, weekly</span><span class="val">$1,600</span></li>
+        <li class="exclusive"><span class="label"><b>My personal cell</b> — text me mid-week when you get stuck</span><span class="val">$350</span></li>
+        <li class="perk"><span class="label"><b>Students choose their own songs</b> — you pick what you learn</span><span class="val">FREE by design!</span></li>
+        <li><span class="label">The complete <b>JWC chord curriculum</b> — every chord type in real musical context</span><span class="val">$250</span></li>
+        <li><span class="label">Personal <b>video feedback</b> on your playing submissions</span><span class="val">$400</span></li>
+        <li><span class="label"><b>Lifetime JWC app access</b> — yours to keep, well beyond the program</span><span class="val">$197</span></li>
+        <li><span class="label"><b>Cohort community</b> access</span><span class="val">Included</span></li>
+        <li><span class="label">Final <b>performance review</b> + certification</span><span class="val">$200</span></li>
+      </ul>
+      <div class="tier-total"><span>If bought separately</span><span class="sum">$2,997+</span></div>
+      <div class="tier-price"><span class="now">$2,497</span><span class="cur">USD</span></div>
+      <p class="tier-fine">One payment. Ask about plans when you inquire.</p>
+      <a class="cta" href="mailto:jamwcam@smokeshadow.net?subject=One-on-One%20%E2%80%94%20July%202026&body=Hi%20Cam%2C%20I'd%20like%20the%20one-on-one%20track%20for%20the%20July%202026%20cohort.%20Please%20send%20me%20the%20details%20and%20payment%20options.%0A%0A(Tell%20me%20a%20bit%20about%20where%20you're%20at%20on%20piano%2Fguitar%20so%20I%20can%20reply%20usefully.)">
+        Inquire about one-on-one
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </article>
+
+  </div>
+</section>
+
+<!-- ===================== FINAL ASK ===================== -->
+<section class="final wrap">
+  <h2>One email gets you started.</h2>
+  <p>No checkout, no funnel maze. Tell me which track you're eyeing and where you're at — I read every message myself and reply with dates, payment options, and whether it's the right fit.</p>
+  <a class="cta" href="mailto:jamwcam@smokeshadow.net?subject=July%202026%20cohort%20%E2%80%94%20info%20request&body=Hi%20Cam%2C%20I'm%20interested%20in%20the%20July%202026%20cohort.%20Here's%20where%20I'm%20at%3A%0A%0A">
+    Email Cam directly
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>
+  </a>
+  <p class="final-fine">jamwcam@smokeshadow.net · replies come from a real person</p>
+  <p class="partner-line">On a tighter budget? There's a <a href="mailto:jamwcam@smokeshadow.net?subject=Partner%20option%20%E2%80%94%20July%202026&body=Hi%20Cam%2C%20I'm%20interested%20in%20the%20July%202026%20cohort%20and%20I'd%20like%20to%20ask%20about%20the%20partner%20option.%20Here's%20where%20I'm%20at%3A%0A%0A">partner option</a> for those who'd rather go through it with a friend — ask me how it works.</p>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <small>© 2026 Jam With Cam · Chart. Invert. Jam.</small>
+    <nav class="foot-links">
+      <a class="foot-link" href="privacy-policy.html">Privacy Policy</a>
+      <span class="foot-sep">·</span>
+      <a class="foot-link" href="privacy-policy.html">Terms of Use</a>
+      <span class="foot-sep">·</span>
+      <a class="foot-mail" href="mailto:jamwcam@smokeshadow.net">jamwcam@smokeshadow.net</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   JWC video players — YouTube iframe API.
+
+   • Each .vid-frame has a custom overlay (caption + logo/icon + play).
+   • Click play  -> overlay hides, that video plays.
+   • Only ONE video plays at a time: starting one pauses the others
+     (prevents overlapping audio).
+   • Inactive videos keep their thumbnails/overlays in place.
+   • Native fullscreen works; exiting returns to the in-page layout.
+
+   TO GO LIVE: replace each data-yt="PLACEHOLDER_YT_ID_x" on the
+   .vid-frame elements with the real YouTube video ID.
+   ============================================================ */
+(function(){
+  var frames = Array.prototype.slice.call(document.querySelectorAll('.vid-frame'));
+  var players = [];   // { player, ready } per real video
+  var apiRequested = false;
+  window.__jwcOnReadyQueue = window.__jwcOnReadyQueue || [];
+
+  function loadAPI(){
+    if(apiRequested) return;
+    apiRequested = true;
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  }
+
+  // Pause every player except the one passed in
+  window.__jwcPauseOthers = function(except){
+    players.forEach(function(p){
+      if(p.player && p.player !== except && p.player.pauseVideo){
+        try{ p.player.pauseVideo(); }catch(e){}
+      }
+    });
+  };
+
+  frames.forEach(function(frame, i){
+    var id = frame.getAttribute('data-yt');
+    var isReal = id && id.indexOf('PLACEHOLDER') === -1;
+    var overlay = frame.querySelector('.vid-overlay');
+    var playBtn = frame.querySelector('.ov-play');
+
+    if(!isReal){
+      // No real ID yet: keep the overlay as a static (non-functional) preview.
+      if(playBtn){
+        playBtn.addEventListener('click', function(){
+          playBtn.animate(
+            [{transform:'scale(1)'},{transform:'scale(.9)'},{transform:'scale(1)'}],
+            {duration:240}
+          );
+        });
+      }
+      return;
+    }
+
+    // Real ID: prepare a mount point for the API player.
+    var mount = document.createElement('div');
+    mount.className = 'yt-mount';
+    mount.style.cssText = 'position:absolute;inset:0;width:100%;height:100%';
+    frame.appendChild(mount);
+
+    var record = { player:null, ready:false, id:id, mount:mount, overlay:overlay };
+    players.push(record);
+
+    function start(){
+      loadAPI();
+      var begin = function(){
+        if(record.player) {           // already built — just play
+          record.player.playVideo();
+          return;
+        }
+        record.player = new YT.Player(mount, {
+          videoId:id,
+          host:'https://www.youtube-nocookie.com',
+          playerVars:{autoplay:1, rel:0, playsinline:1, modestbranding:1,
+                      origin:window.location.origin},
+          events:{
+            onReady:function(e){ record.ready = true; e.target.playVideo(); },
+            onStateChange:function(e){
+              // When THIS video starts playing, pause all others.
+              if(e.data === YT.PlayerState.PLAYING){
+                window.__jwcPauseOthers(record.player);
+              }
+            }
+          }
+        });
+      };
+      if(window.YT && window.YT.Player){ begin(); }
+      else { window.__jwcOnReadyQueue.push(begin); }
+
+      if(overlay) overlay.style.display = 'none';   // reveal the player
+      frame.classList.add('is-playing');
+    }
+
+    if(playBtn) playBtn.addEventListener('click', start);
+    if(overlay) overlay.style.cursor = 'pointer';
+    if(overlay) overlay.addEventListener('click', function(e){
+      if(e.target === playBtn || playBtn.contains(e.target)) return; // btn handles itself
+      start();
+    });
+  });
+
+  // Queue for begin() calls made before the API finished loading.
+  window.onYouTubeIframeAPIReady = function(){
+    window.__jwcOnReadyQueue.forEach(function(fn){ fn(); });
+    window.__jwcOnReadyQueue = [];
+  };
+})();
+</script>
+
 </body>
 </html>
