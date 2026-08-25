@@ -78,16 +78,19 @@
   .scroll-cue .line{width:24px;height:1px;background:var(--ink-dim);animation:pulseLine 2.2s ease-in-out infinite;}
   @keyframes pulseLine{0%,100%{opacity:.4;width:24px;}50%{opacity:1;width:40px;}}
 
+  .hero-controls{
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    padding:26px 8vw;background:var(--bg);
+  }
   .sound-toggle{
-    position:absolute;right:8vw;bottom:28px;z-index:2;
     display:flex;align-items:center;gap:8px;
-    background:rgba(10,12,15,0.5);border:1px solid var(--line);
+    background:transparent;border:1px solid var(--line);
     padding:9px 16px;border-radius:22px;cursor:pointer;
     font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--ink);opacity:0;animation:fadeUp 1s ease 2s forwards;
+    color:var(--ink);
     transition:border-color .3s ease,background .3s ease;
   }
-  .sound-toggle:hover{border-color:var(--blue-light);background:rgba(10,12,15,0.75);}
+  .sound-toggle:hover{border-color:var(--blue-light);background:rgba(239,239,236,0.04);}
   .sound-toggle .icon-on{display:none;}
   .sound-toggle.unmuted .icon-off{display:none;}
   .sound-toggle.unmuted .icon-on{display:inline-flex;}
@@ -106,21 +109,17 @@
   .hero-yt-slide.prep-left{transition:none;transform:translateX(-4%);opacity:0;}
   .hero-yt-slide.prep-right{transition:none;transform:translateX(4%);opacity:0;}
 
-  .hero-arrow-pair{
-    position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:2;
-    display:flex;gap:14px;
-  }
   .hero-arrow{
-    width:44px;height:44px;border-radius:50%;
-    background:rgba(10,12,15,0.45);border:1px solid var(--line);
+    width:44px;height:44px;border-radius:50%;flex-shrink:0;
+    background:transparent;border:1px solid var(--line);
     display:none;align-items:center;justify-content:center;cursor:pointer;
     color:var(--ink);transition:border-color .3s ease,background .3s ease;
   }
   .hero-arrow.show{display:flex;}
-  .hero-arrow:hover{border-color:var(--blue-light);background:rgba(10,12,15,0.7);}
+  .hero-arrow:hover{border-color:var(--blue-light);background:rgba(239,239,236,0.04);}
 
   @media(max-width:480px){
-    .hero-arrow-pair{gap:10px;}
+    .hero-controls{gap:10px;}
     .hero-arrow{width:36px;height:36px;}
   }
 
@@ -355,14 +354,15 @@
     </div>
   </div>
 
-  <div class="hero-arrow-pair">
-    <button class="hero-arrow" id="heroArrowPrev" aria-label="Previous clip">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button class="hero-arrow" id="heroArrowNext" aria-label="Next clip">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-  </div>
+  <h1 id="heroTitle"></h1>
+  <p class="sub">Live piano/guitar and vocals for retirement and assisted living communities across Alberta — repertoire built for the room, not just the résumé.</p>
+  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+</section>
+
+<div class="hero-controls">
+  <button class="hero-arrow" id="heroArrowPrev" aria-label="Previous clip">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
 
   <button class="sound-toggle" id="soundToggle" aria-label="Turn video sound on" aria-pressed="false">
     <span class="icon-off" aria-hidden="true">
@@ -373,10 +373,11 @@
     </span>
     <span class="sound-label">Click for sound</span>
   </button>
-  <h1 id="heroTitle"></h1>
-  <p class="sub">Live piano/guitar and vocals for retirement and assisted living communities across Alberta — repertoire built for the room, not just the résumé.</p>
-  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
-</section>
+
+  <button class="hero-arrow" id="heroArrowNext" aria-label="Next clip">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+</div>
 
 <section class="intro">
   <div class="reveal">
