@@ -36,13 +36,12 @@
 
   /* HERO */
   .hero{
-    height:100vh;min-height:640px;display:flex;flex-direction:column;
-    justify-content:flex-end;padding:0 8vw 80px;position:relative;
+    height:100vh;min-height:640px;position:relative;
     overflow:hidden;background:#0A0C0F;
   }
   .hero::before{
     content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-    background:linear-gradient(180deg, rgba(10,12,15,0.2) 0%, rgba(10,12,15,0.9) 88%);
+    background:linear-gradient(180deg, rgba(10,12,15,0.15) 0%, rgba(10,12,15,0.55) 100%);
   }
   .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;}
   .hero-fallback{
@@ -55,14 +54,15 @@
     width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
     pointer-events:none;
   }
-  .hero h1{
-    position:relative;z-index:2;
+
+  /* HEADLINE — now its own section below the video + controls */
+  .hero-text{padding:36px 8vw min(14vw,140px);}
+  .hero-text h1{
     font-size:clamp(38px,6.4vw,92px);line-height:0.98;max-width:14ch;
   }
-  .hero .word{display:inline-block;opacity:0;transform:translateY(0.7em);filter:blur(8px);
+  .hero-text .word{display:inline-block;opacity:0;transform:translateY(0.7em);filter:blur(8px);
     animation:wordIn 1.15s cubic-bezier(.2,.7,.2,1) forwards;}
-  .hero p.sub{
-    position:relative;z-index:2;
+  .hero-text p.sub{
     margin-top:22px;font-size:17px;color:var(--ink-dim);max-width:36ch;
     opacity:0;animation:fadeUp 1.1s ease 1.7s forwards;
   }
@@ -354,8 +354,6 @@
     </div>
   </div>
 
-  <h1 id="heroTitle"></h1>
-  <p class="sub">Live piano/guitar and vocals for retirement and assisted living communities across Alberta — repertoire built for the room, not just the résumé.</p>
   <div class="scroll-cue"><span class="line"></span>SCROLL</div>
 </section>
 
@@ -378,6 +376,11 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
   </button>
 </div>
+
+<section class="hero-text">
+  <h1 id="heroTitle"></h1>
+  <p class="sub">Live piano/guitar and vocals for retirement and assisted living communities across Alberta — repertoire built for the room, not just the résumé.</p>
+</section>
 
 <section class="intro">
   <div class="reveal">
