@@ -70,17 +70,18 @@
   @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 
   .scroll-cue{
-    position:absolute;bottom:28px;left:8vw;font-size:11px;color:var(--ink-dim);
-    letter-spacing:0.1em;display:flex;align-items:center;gap:10px;z-index:2;
+    position:absolute;bottom:28px;left:8vw;font-size:10px;color:var(--ink-dim);
+    letter-spacing:0.12em;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2;
     opacity:0;animation:fadeUp 1s ease 2s forwards;transition:opacity .6s ease;
   }
   .scroll-cue.hidden{opacity:0 !important;}
-  .scroll-cue .line{width:24px;height:1px;background:var(--ink-dim);animation:pulseLine 2.2s ease-in-out infinite;}
-  @keyframes pulseLine{0%,100%{opacity:.4;width:24px;}50%{opacity:1;width:40px;}}
+  .scroll-cue .chevron{animation:bounceDown 1.6s ease-in-out infinite;}
+  @keyframes bounceDown{0%,100%{transform:translateY(0);opacity:.5;}50%{transform:translateY(6px);opacity:1;}}
 
   .hero-controls{
     display:flex;align-items:center;justify-content:center;gap:16px;
-    padding:26px 8vw;background:var(--bg);
+    padding:22px 8vw;background:var(--bg);
+    border-top:1px solid var(--line);
   }
   .sound-toggle{
     display:flex;align-items:center;gap:8px;
@@ -354,7 +355,10 @@
     </div>
   </div>
 
-  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+  <div class="scroll-cue">
+    <span>SCROLL</span>
+    <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
 </section>
 
 <div class="hero-controls">
@@ -636,6 +640,13 @@
   arrowNext.addEventListener('click', nextClip);
   arrowPrev.addEventListener('click', prevClip);
 
+  // Show arrows right away — no need to wait on YouTube's own script for this,
+  // since we already know from heroClips how many real clips exist.
+  if(realClipIndices().length > 1){
+    arrowPrev.classList.add('show');
+    arrowNext.classList.add('show');
+  }
+
   window.onYouTubeIframeAPIReady = function(){
     const real = realClipIndices();
     if(real.length===0) return;
@@ -643,13 +654,7 @@
     heroSlide.classList.add('show','center');
     heroPlayer = new YT.Player('heroYTPlayer', {
       videoId: heroClips[real[0]].id,
-      playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1, loop:1, playlist:heroClips[real[0]].id},
-      events:{ onReady: function(){
-        if(real.length>1){
-          arrowPrev.classList.add('show');
-          arrowNext.classList.add('show');
-        }
-      }}
+      playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1, loop:1, playlist:heroClips[real[0]].id}
     });
   };
 
