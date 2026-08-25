@@ -257,6 +257,10 @@
   /* CALENDAR */
   .cal-wrap{max-width:520px;margin:0 auto 34px;text-align:left;}
   .cal-hint{font-size:13px;color:var(--ink-dim);margin-bottom:6px;}
+  .cal-rotate-hint{
+    font-size:12px;color:var(--ink-dim);margin-bottom:14px;
+    display:flex;align-items:center;gap:6px;
+  }
   .cal-header{
     display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
   }
@@ -342,6 +346,7 @@
   @media(min-width:768px){
     .cal-list{display:none;}
     .cal-grid-wrap{display:block;}
+    .cal-rotate-hint{display:none;}
   }
 </style>
 </head>
@@ -472,6 +477,10 @@
 
     <div class="cal-wrap">
       <p class="cal-hint">Click an open date below to start a request for that day.</p>
+      <p class="cal-rotate-hint">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M12 18h.01"/></svg>
+        Turn your phone sideways for the full calendar view
+      </p>
       <div class="cal-header">
         <div class="cal-legend">
           <span><i class="cal-dot dot-open"></i>Open</span>
