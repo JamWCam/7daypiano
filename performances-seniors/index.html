@@ -48,11 +48,11 @@
     position:absolute;inset:0;
     background:repeating-linear-gradient(115deg, #14171c 0 2px, #0A0C0F 2px 40px);
   }
-  .hero-yt{position:absolute;inset:0;}
-  .hero-yt iframe{
+  #heroYTPlayer{position:absolute;inset:0;}
+  iframe#heroYTPlayer{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
     width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
-    pointer-events:none;
+    pointer-events:none;border:0;
   }
 
   /* HEADLINE — now its own section below the video + controls */
@@ -653,6 +653,7 @@
     activeClipIndex = real[0];
     heroSlide.classList.add('show','center');
     heroPlayer = new YT.Player('heroYTPlayer', {
+      width:'100%', height:'100%',
       videoId: heroClips[real[0]].id,
       playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1, loop:1, playlist:heroClips[real[0]].id}
     });
