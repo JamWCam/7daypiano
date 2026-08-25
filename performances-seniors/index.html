@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live Piano & Vocals for Senior Living Communities</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@300;400;500&display=swap');
+
+  :root{
+    --bg:#0A0C0F;
+    --ink:#EFEFEC;
+    --ink-dim:#9A9C9F;
+    --blue-deep:#1B3A5C;
+    --blue-light:#5B87AC;
+    --line:rgba(239,239,236,0.14);
+    --cal-light:#8FB3D1;
+    --cal-dark:#16324F;
+    --cal-sunday:#242A30;
+    --cal-off-text:#4B4F54;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;letter-spacing:-0.01em;}
+  section{padding:min(14vw,140px) 8vw;position:relative;}
+  .eyebrow{
+    font-size:12px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--blue-light);margin-bottom:18px;display:block;font-weight:400;
+  }
+
+  /* HERO */
+  .hero{
+    height:100vh;min-height:640px;display:flex;flex-direction:column;
+    justify-content:flex-end;padding:0 8vw 80px;position:relative;
+    overflow:hidden;background:#0A0C0F;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(180deg, rgba(10,12,15,0.2) 0%, rgba(10,12,15,0.9) 88%);
+  }
+  .hero-media{position:absolute;inset:0;z-index:0;overflow:hidden;}
+  .hero-fallback{
+    position:absolute;inset:0;
+    background:repeating-linear-gradient(115deg, #14171c 0 2px, #0A0C0F 2px 40px);
+  }
+  .hero-yt{position:absolute;inset:0;}
+  .hero-yt iframe{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:100vw;height:56.25vw;min-height:100vh;min-width:177.78vh;
+    pointer-events:none;
+  }
+  .hero h1{
+    position:relative;z-index:2;
+    font-size:clamp(38px,6.4vw,92px);line-height:0.98;max-width:14ch;
+  }
+  .hero .word{display:inline-block;opacity:0;transform:translateY(0.7em);filter:blur(8px);
+    animation:wordIn 1.15s cubic-bezier(.2,.7,.2,1) forwards;}
+  .hero p.sub{
+    position:relative;z-index:2;
+    margin-top:22px;font-size:17px;color:var(--ink-dim);max-width:36ch;
+    opacity:0;animation:fadeUp 1.1s ease 1.7s forwards;
+  }
+  @keyframes wordIn{to{opacity:1;transform:translateY(0);filter:blur(0);}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  .scroll-cue{
+    position:absolute;bottom:28px;left:8vw;font-size:11px;color:var(--ink-dim);
+    letter-spacing:0.1em;display:flex;align-items:center;gap:10px;z-index:2;
+    opacity:0;animation:fadeUp 1s ease 2s forwards;transition:opacity .6s ease;
+  }
+  .scroll-cue.hidden{opacity:0 !important;}
+  .scroll-cue .line{width:24px;height:1px;background:var(--ink-dim);animation:pulseLine 2.2s ease-in-out infinite;}
+  @keyframes pulseLine{0%,100%{opacity:.4;width:24px;}50%{opacity:1;width:40px;}}
+
+  .sound-toggle{
+    position:absolute;right:8vw;bottom:28px;z-index:2;
+    display:flex;align-items:center;gap:8px;
+    background:rgba(10,12,15,0.5);border:1px solid var(--line);
+    padding:9px 16px;border-radius:22px;cursor:pointer;
+    font-family:'Inter',sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink);opacity:0;animation:fadeUp 1s ease 2s forwards;
+    transition:border-color .3s ease,background .3s ease;
+  }
+  .sound-toggle:hover{border-color:var(--blue-light);background:rgba(10,12,15,0.75);}
+  .sound-toggle .icon-on{display:none;}
+  .sound-toggle.unmuted .icon-off{display:none;}
+  .sound-toggle.unmuted .icon-on{display:inline-flex;}
+  .sound-toggle.interacted .sound-label{display:none;}
+  .sound-toggle svg{display:block;}
+
+  /* CLIP STRIP (hero video carousel) */
+  .hero-yt-slide{
+    position:absolute;inset:0;display:none;
+    transition:transform .45s cubic-bezier(.2,.7,.2,1), opacity .45s ease;
+  }
+  .hero-yt-slide.show{display:block;}
+  .hero-yt-slide.center{transform:translateX(0);opacity:1;}
+  .hero-yt-slide.out-left{transform:translateX(-4%);opacity:0;}
+  .hero-yt-slide.out-right{transform:translateX(4%);opacity:0;}
+  .hero-yt-slide.prep-left{transition:none;transform:translateX(-4%);opacity:0;}
+  .hero-yt-slide.prep-right{transition:none;transform:translateX(4%);opacity:0;}
+
+  .hero-arrow{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(10,12,15,0.45);border:1px solid var(--line);
+    display:none;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--ink);transition:border-color .3s ease,background .3s ease;
+  }
+  .hero-arrow.show{display:flex;}
+  .hero-arrow:hover{border-color:var(--blue-light);background:rgba(10,12,15,0.7);}
+  .hero-arrow-prev{left:24px;}
+  .hero-arrow-next{right:24px;}
+
+  /* WAVEFORM SIGNATURE */
+  .waveform{width:100%;height:60px;margin:0 auto;max-width:900px;}
+  .waveform path{
+    stroke:var(--blue-light);stroke-width:1.4;fill:none;
+    stroke-dasharray:1400;stroke-dashoffset:1400;transition:stroke-dashoffset 1.6s ease;
+  }
+  .waveform.in-view path{stroke-dashoffset:0;}
+
+  /* REVEAL */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease, transform .8s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+
+  /* INTRO */
+  .intro h2{font-size:clamp(24px,3.2vw,40px);max-width:22ch;line-height:1.3;font-weight:400;color:var(--ink);}
+  .intro h2 em{font-style:italic;color:var(--blue-light);}
+
+  /* REPERTOIRE */
+  .rep-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);margin-top:40px;
+  }
+  .rep-card{
+    background:var(--bg);padding:34px 26px;cursor:pointer;position:relative;
+    overflow:hidden;transition:background .4s ease;
+  }
+  .rep-card:hover{background:#101317;}
+  .rep-card.tapped{background:#101317;}
+  .rep-card .num{font-size:12px;color:var(--ink-dim);letter-spacing:.1em;}
+  .rep-card h3{font-size:22px;margin-top:14px;font-weight:500;}
+  .rep-card p{
+    font-size:14px;color:var(--ink-dim);margin-top:12px;line-height:1.6;
+    max-height:0;opacity:0;overflow:hidden;transition:max-height .5s ease,opacity .4s ease .05s;
+  }
+  .rep-card:hover p, .rep-card.tapped p{max-height:120px;opacity:1;}
+  .rep-card::after{
+    content:'';position:absolute;left:0;bottom:0;height:2px;width:0;
+    background:var(--blue-light);transition:width .4s ease;
+  }
+  .rep-card:hover::after, .rep-card.tapped::after{width:100%;}
+  .rep-toggle{
+    position:absolute;right:18px;bottom:18px;width:22px;height:22px;
+    display:none;align-items:center;justify-content:center;
+    border:1px solid var(--line);border-radius:50%;font-size:13px;color:var(--ink-dim);
+    transition:transform .3s ease,border-color .3s ease,color .3s ease;
+  }
+  .rep-card.tapped .rep-toggle{transform:rotate(45deg);border-color:var(--blue-light);color:var(--blue-light);}
+  .rep-hint{display:none;font-size:12px;color:var(--ink-dim);margin-top:14px;letter-spacing:.03em;}
+  @media(hover:none){
+    .rep-toggle{display:flex;}
+    .rep-hint{display:block;}
+  }
+
+  /* TIMELINE */
+  .timeline{margin-top:50px;border-left:1px solid var(--line);padding-left:36px;}
+  .t-item{position:relative;padding-bottom:44px;}
+  .t-item:last-child{padding-bottom:0;}
+  .t-item::before{
+    content:'';position:absolute;left:-41px;top:4px;width:9px;height:9px;
+    border-radius:50%;background:var(--blue-deep);border:1px solid var(--blue-light);
+  }
+  .t-item h3{font-size:18px;font-weight:500;}
+  .t-item p{font-size:14px;color:var(--ink-dim);margin-top:6px;max-width:44ch;line-height:1.6;}
+  .t-item .time{font-size:12px;color:var(--blue-light);letter-spacing:.06em;}
+
+  /* TESTIMONIAL */
+  .testi{text-align:center;max-width:640px;margin:0 auto;}
+  .testi blockquote{
+    font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+    font-size:clamp(20px,2.6vw,30px);line-height:1.5;color:var(--ink);
+  }
+  .testi cite{display:block;margin-top:20px;font-size:13px;color:var(--ink-dim);font-style:normal;}
+
+  /* CTA + OVERLAY */
+  .cta-wrap{text-align:center;}
+  .cta-btn{
+    background:transparent;color:var(--ink);border:1px solid var(--blue-light);
+    padding:16px 38px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    cursor:pointer;transition:background .3s ease,color .3s ease;font-family:'Inter',sans-serif;
+  }
+  .cta-btn:hover{background:var(--blue-light);color:#0A0C0F;}
+
+  .overlay{
+    position:fixed;inset:0;background:rgba(6,7,9,0.6);backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;z-index:50;
+    opacity:0;pointer-events:none;transition:opacity .32s ease;
+  }
+  .overlay.open{opacity:1;pointer-events:auto;}
+  .panel{
+    background:#101317;border:1px solid var(--line);max-width:460px;width:88%;
+    padding:44px 38px;transform:translateY(16px) scale(0.98);opacity:0;
+    transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .32s ease;
+  }
+  .overlay.open .panel{transform:translateY(0) scale(1);opacity:1;}
+  .panel h3{font-size:24px;font-weight:500;}
+  .panel p{font-size:14px;color:var(--ink-dim);margin-top:10px;line-height:1.6;}
+  .panel .close{
+    position:absolute;top:24px;right:32px;background:none;border:none;color:var(--ink-dim);
+    font-size:22px;cursor:pointer;line-height:1;
+  }
+  .field{margin-top:22px;}
+  .field label{font-size:12px;color:var(--ink-dim);letter-spacing:.05em;display:block;margin-bottom:6px;}
+  .field input{
+    width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+    color:var(--ink);font-size:15px;padding:8px 0;font-family:'Inter',sans-serif;
+  }
+  .field input:focus{outline:none;border-bottom-color:var(--blue-light);}
+  .field select{
+    width:100%;background:transparent;border:none;border-bottom:1px solid var(--line);
+    color:var(--ink);font-size:15px;padding:8px 0;font-family:'Inter',sans-serif;
+    appearance:none;-webkit-appearance:none;cursor:pointer;
+  }
+  .field select:focus{outline:none;border-bottom-color:var(--blue-light);}
+  .field select option{background:#101317;color:var(--ink);}
+  .field-row{display:flex;gap:20px;margin-top:22px;}
+  .field-row .field{margin-top:0;flex:1;}
+  .field-date-row{display:flex;gap:14px;align-items:flex-end;}
+  .field-date-row .field{flex:1;margin-top:0;}
+  .field-date-row .field-shift{flex:0 0 92px;}
+  .panel .submit{margin-top:28px;width:100%;}
+  .field-error{
+    font-size:12px;color:#D98C7A;margin-top:14px;min-height:0;display:none;
+  }
+  .field-error.show{display:block;}
+  .panel-success{display:none;text-align:center;padding:16px 0 4px;}
+  .panel-success.show{display:block;}
+  .panel-success h3{color:var(--blue-light);}
+  .panel-success p{font-size:14px;color:var(--ink-dim);margin-top:12px;line-height:1.6;}
+
+  .note{font-size:11px;color:var(--ink-dim);text-align:center;margin-top:60px;letter-spacing:.04em;}
+
+  /* CALENDAR */
+  .cal-wrap{max-width:520px;margin:0 auto 34px;text-align:left;}
+  .cal-hint{font-size:13px;color:var(--ink-dim);margin-bottom:6px;}
+  .cal-header{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+  }
+  .cal-legend{display:flex;gap:16px;font-size:11px;color:var(--ink-dim);}
+  .cal-legend span{display:inline-flex;align-items:center;gap:6px;}
+  .cal-dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .dot-open{background:var(--cal-light);}
+  .dot-booked{background:var(--cal-dark);border:1px solid var(--blue-light);}
+  .dot-off{background:var(--cal-sunday);}
+  .cal-nav{display:flex;gap:8px;}
+  .cal-nav button{
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+    width:30px;height:30px;cursor:pointer;font-size:14px;font-family:'Inter',sans-serif;
+    transition:border-color .25s ease,opacity .25s ease;
+  }
+  .cal-nav button:hover:not(:disabled){border-color:var(--blue-light);}
+  .cal-nav button:disabled{opacity:.3;cursor:default;}
+  .cal-list{border:1px solid var(--line);}
+  .cal-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 16px;font-size:14px;cursor:pointer;position:relative;
+    transition:filter .2s ease;
+  }
+  .cal-row:hover:not(.cal-off):not(.cal-booked){filter:brightness(1.12);}
+  .cal-row.cal-off{cursor:default;}
+  .cal-row.cal-booked{cursor:default;}
+  .cal-row + .cal-row{border-top:1px solid rgba(0,0,0,0.18);}
+  .cal-day-main{display:flex;align-items:baseline;gap:10px;}
+  .cal-daynum{font-family:'Fraunces',serif;font-size:17px;font-weight:500;}
+  .cal-dayname{font-size:12px;letter-spacing:.05em;opacity:.85;}
+  .cal-status{font-size:12px;letter-spacing:.03em;text-align:right;}
+  .cal-today-badge{
+    font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid currentColor;padding:2px 7px;margin-left:8px;opacity:.9;
+  }
+  .cal-ink-black{color:#0A0C0F;}
+  .cal-ink-white{color:#F4F4F2;}
+  .cal-status-emph{font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  .cal-status-off{color:var(--cal-off-text) !important;}
+
+  .site-footer{
+    text-align:center;padding:40px 8vw 50px;
+  }
+  .site-footer a{
+    font-size:11px;color:var(--ink-dim);text-decoration:none;
+    letter-spacing:.03em;border-bottom:1px solid transparent;
+    transition:border-color .3s ease,color .3s ease;
+  }
+  .site-footer a:hover{color:var(--ink);border-bottom-color:var(--ink-dim);}
+
+  .cal-grid-wrap{display:none;}
+  .cal-grid-head{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+    margin-bottom:6px;
+  }
+  .cal-grid-head span{
+    font-size:11px;color:var(--ink-dim);text-align:center;
+    letter-spacing:.06em;text-transform:uppercase;padding-bottom:4px;
+  }
+  .cal-grid{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+  }
+  .cal-month-label-cell{
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-dim);padding:14px 6px 4px;border-bottom:1px solid var(--line);
+    background:var(--bg);
+  }
+  .cal-cell{
+    min-height:108px;padding:10px 9px;display:flex;flex-direction:column;
+    gap:4px;cursor:pointer;transition:filter .2s ease;
+  }
+  .cal-cell:hover:not(.cal-off):not(.cal-booked):not(.cal-filler){filter:brightness(1.12);}
+  .cal-cell.cal-off,.cal-cell.cal-booked,.cal-cell.cal-filler{cursor:default;}
+  .cal-cell.cal-filler{background:var(--bg) !important;}
+  .cal-cell .cal-daynum{font-family:'Fraunces',serif;font-size:16px;font-weight:500;}
+  .cal-cell .cal-status{font-size:11px;line-height:1.35;margin-top:auto;}
+  .cal-cell .cal-today-badge{
+    font-size:9px;letter-spacing:.06em;text-transform:uppercase;
+    border:1px solid currentColor;padding:1px 6px;opacity:.9;align-self:flex-start;
+  }
+
+  @media(min-width:768px){
+    .cal-list{display:none;}
+    .cal-grid-wrap{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-media">
+    <div class="hero-fallback"></div>
+    <div class="hero-yt-slide" id="heroYTSlide">
+      <div id="heroYTPlayer" class="hero-yt"></div>
+    </div>
+  </div>
+
+  <button class="hero-arrow hero-arrow-prev" id="heroArrowPrev" aria-label="Previous clip">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="hero-arrow hero-arrow-next" id="heroArrowNext" aria-label="Next clip">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  <button class="sound-toggle" id="soundToggle" aria-label="Turn video sound on" aria-pressed="false">
+    <span class="icon-off" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+    </span>
+    <span class="icon-on" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></svg>
+    </span>
+    <span class="sound-label">Click for sound</span>
+  </button>
+  <h1 id="heroTitle"></h1>
+  <p class="sub">Live piano/guitar and vocals for retirement and assisted living communities across Alberta — repertoire built for the room, not just the résumé.</p>
+  <div class="scroll-cue"><span class="line"></span>SCROLL</div>
+</section>
+
+<section class="intro">
+  <div class="reveal">
+    <span class="eyebrow">01 — The idea</span>
+    <h2>Your residents don't need background music. <em>They want a reason to gather.</em></h2>
+  </div>
+  <svg class="waveform reveal" viewBox="0 0 900 60" preserveAspectRatio="none">
+    <path d="M0,30 C40,10 60,50 100,30 C140,10 160,50 200,30 C240,12 260,48 300,30 C340,14 360,46 400,30 C440,8 460,52 500,30 C540,16 560,44 600,30 C640,12 660,48 700,30 C740,18 760,42 800,30 C830,20 860,40 900,30"/>
+  </svg>
+</section>
+
+<section class="repertoire">
+  <div class="reveal">
+    <span class="eyebrow">02 — Repertoire</span>
+    <h2 style="font-size:32px;font-weight:400;">Four ways to fill the room</h2>
+    <p class="rep-hint">Tap a card for details.</p>
+  </div>
+  <div class="rep-grid reveal">
+    <div class="rep-card">
+      <span class="num">01</span>
+      <h3>Golden Jazz Standards</h3>
+      <p>Sinatra, Johnny Mathis, Nat King Cole, the Great American Songbook — the songs that get feet tapping and lyrics sung along, quietly, from memory.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+    <div class="rep-card">
+      <span class="num">02</span>
+      <h3>Broadway Classics</h3>
+      <p>Highlights from Les Misérables, The Phantom of the Opera, Joseph, The Sound of Music, and many more familiar tunes from stage and screen.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+    <div class="rep-card">
+      <span class="num">03</span>
+      <h3>Decade Sing-Alongs</h3>
+      <p>Themed sets by era — the 40s, 50s, 60s — built around what your residents grew up on, not what's trending.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+    <div class="rep-card">
+      <span class="num">04</span>
+      <h3>Seasonal & Holiday</h3>
+      <p>Christmas, Valentine's Day, Canada Day — programming tied to your facility's calendar, not a generic set list.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+  </div>
+</section>
+
+<section class="booking-flow">
+  <div class="reveal">
+    <span class="eyebrow">03 — What a booking looks like</span>
+    <h2 style="font-size:32px;font-weight:400;">Simple, from first email to encore</h2>
+    <p class="rep-hint">Tap a card for details.</p>
+  </div>
+  <div class="rep-grid reveal">
+    <div class="rep-card">
+      <span class="num">Day 1</span>
+      <h3>A short call</h3>
+      <p>15 minutes to talk room size, audience, and the occasion — describe the dream scenario for your clients.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+    <div class="rep-card">
+      <span class="num">Day 2</span>
+      <h3>A tailored set list</h3>
+      <p>Built around your residents' era and the mood you want — sent for approval before anything's locked in.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+    <div class="rep-card">
+      <span class="num">Show day</span>
+      <h3>Arrive, set up, perform</h3>
+      <p>Self contained sound (my PA system if needed), 45–60 minute sets, start on time, multiple sets/day is an option for facilities with more than one gathering area.</p>
+      <span class="rep-toggle" aria-hidden="true">+</span>
+    </div>
+  </div>
+</section>
+
+<section class="testimonial">
+  <div class="testi reveal">
+    <blockquote>"Residents were singing along within the first two songs. Booked again before he'd finished packing up."</blockquote>
+    <cite>— Shayla Noel, Chinook Lodge Entertainment Director</cite>
+  </div>
+</section>
+
+<section class="cta-wrap">
+  <div class="reveal">
+    <span class="eyebrow">04 — Get in touch</span>
+    <h2 style="font-size:32px;font-weight:400;margin-bottom:28px;">Check a date for your facility</h2>
+
+    <div class="cal-wrap">
+      <p class="cal-hint">Click an open date below to start a request for that day.</p>
+      <div class="cal-header">
+        <div class="cal-legend">
+          <span><i class="cal-dot dot-open"></i>Open</span>
+          <span><i class="cal-dot dot-booked"></i>Booked</span>
+          <span><i class="cal-dot dot-off"></i>Unavailable</span>
+        </div>
+        <div class="cal-nav">
+          <button id="calPrev" aria-label="Previous two weeks">&larr;</button>
+          <button id="calNext" aria-label="Next two weeks">&rarr;</button>
+        </div>
+      </div>
+      <div class="cal-list" id="calList"></div>
+
+      <div class="cal-grid-wrap">
+        <div class="cal-grid-head">
+          <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </div>
+
+    <button class="cta-btn" id="mainRequestBtn" onclick="openOverlay()">Request availability</button>
+  </div>
+</section>
+
+<div class="overlay" id="overlay">
+  <div class="panel">
+    <button class="close" onclick="document.getElementById('overlay').classList.remove('open')">&times;</button>
+    <div id="panelForm">
+      <h3>Request availability</h3>
+      <p>Tell me a bit about your facility and the date you're considering.</p>
+      <div class="field"><label>Facility name</label><input type="text" id="facName" placeholder="e.g. Chartwell Riverside"></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Piano on site</label>
+          <select id="pianoOnSite">
+            <option value="">Select…</option>
+            <option value="excellent">Excellent</option>
+            <option value="not-sure">Not sure</option>
+            <option value="not-provided">Not provided here</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Microphone</label>
+          <select id="micOnSite">
+            <option value="">Select…</option>
+            <option value="excellent">Excellent</option>
+            <option value="not-sure">Not sure</option>
+            <option value="not-provided">Not provided here</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-date-row">
+        <div class="field"><label>Preferred date</label><input type="text" id="prefDate" placeholder="e.g. October 14"></div>
+        <div class="field field-shift">
+          <label>Shift</label>
+          <select id="prefShift">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+            <option value="BOTH">Both</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field"><label>Email</label><input type="text" id="facEmail" placeholder="you@facility.com"></div>
+      <p class="field-error" id="formError"></p>
+      <button class="cta-btn submit" id="sendRequestBtn">Send request</button>
+    </div>
+    <div id="panelSuccess" class="panel-success">
+      <h3>Request sent</h3>
+      <p>Thanks — that's on its way. Expect a reply within a day or two to set up a short call.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <a href="/">Also teaching piano — visit Jam With Cam Academy</a>
+</footer>
+
+<script src="bookings-data.js"></script>
+<script>
+  const title = document.getElementById('heroTitle');
+  const words = ["Music", "that", "remembers", "them."];
+  words.forEach((w,i)=>{
+    const span = document.createElement('span');
+    span.className='word';
+    span.textContent = w + '\u00A0';
+    span.style.animationDelay = (0.25 + i*0.22) + 's';
+    title.appendChild(span);
+  });
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); });
+  }, {threshold:0.2});
+  document.querySelectorAll('.reveal, .waveform').forEach(el=>io.observe(el));
+
+  document.querySelectorAll('.rep-card').forEach(card=>{
+    card.addEventListener('click', ()=>{ card.classList.toggle('tapped'); });
+  });
+
+  /* HERO CLIP CAROUSEL
+     Replace the empty id values below with real YouTube video IDs from
+     Cameron's channel (the part after watch?v= in the URL) once uploaded.
+     Everything below activates automatically once at least one id is present —
+     arrows only appear once there are 2+ real clips to navigate between. */
+  const heroClips = [
+    {id:'QkE7pSphups', title:'Clip 1'},
+    {id:'8kFNKUOup14', title:'Clip 2'},
+    {id:'OAjA5cZtm04', title:'Clip 3'}
+  ];
+
+  let heroPlayer = null;
+  let activeClipIndex = null;
+  const heroSlide = document.getElementById('heroYTSlide');
+  const arrowPrev = document.getElementById('heroArrowPrev');
+  const arrowNext = document.getElementById('heroArrowNext');
+
+  function realClipIndices(){
+    return heroClips.map((c,i)=>c.id?i:null).filter(i=>i!==null);
+  }
+
+  function goToClip(idx, direction){
+    const clip = heroClips[idx];
+    if(!clip || !clip.id || !heroPlayer) return;
+
+    const outClass = direction==='next' ? 'out-left' : 'out-right';
+    const prepClass = direction==='next' ? 'prep-right' : 'prep-left';
+
+    heroSlide.classList.remove('center');
+    heroSlide.classList.add(outClass);
+
+    setTimeout(()=>{
+      activeClipIndex = idx;
+      heroPlayer.loadVideoById(clip.id);
+      heroPlayer.mute();
+      soundOn = false;
+      soundToggle.classList.remove('unmuted');
+      soundToggle.setAttribute('aria-pressed','false');
+      soundToggle.setAttribute('aria-label','Turn video sound on');
+
+      heroSlide.classList.remove(outClass);
+      heroSlide.classList.add(prepClass);
+      void heroSlide.offsetHeight; // force reflow so the next class change animates
+      heroSlide.classList.remove(prepClass);
+      heroSlide.classList.add('center');
+    }, 450);
+  }
+
+  function nextClip(){
+    const real = realClipIndices();
+    if(real.length < 2) return;
+    const pos = real.indexOf(activeClipIndex);
+    const nextIdx = real[(pos+1) % real.length];
+    goToClip(nextIdx, 'next');
+  }
+  function prevClip(){
+    const real = realClipIndices();
+    if(real.length < 2) return;
+    const pos = real.indexOf(activeClipIndex);
+    const prevIdx = real[(pos-1+real.length) % real.length];
+    goToClip(prevIdx, 'prev');
+  }
+
+  arrowNext.addEventListener('click', nextClip);
+  arrowPrev.addEventListener('click', prevClip);
+
+  window.onYouTubeIframeAPIReady = function(){
+    const real = realClipIndices();
+    if(real.length===0) return;
+    activeClipIndex = real[0];
+    heroSlide.classList.add('show','center');
+    heroPlayer = new YT.Player('heroYTPlayer', {
+      videoId: heroClips[real[0]].id,
+      playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1, loop:1, playlist:heroClips[real[0]].id},
+      events:{ onReady: function(){
+        if(real.length>1){
+          arrowPrev.classList.add('show');
+          arrowNext.classList.add('show');
+        }
+      }}
+    });
+  };
+
+  if(heroClips.some(c=>c.id)){
+    const ytTag = document.createElement('script');
+    ytTag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(ytTag);
+  }
+
+  const soundToggle = document.getElementById('soundToggle');
+  let soundOn = false;
+  soundToggle.addEventListener('click', ()=>{
+    soundOn = !soundOn;
+    soundToggle.classList.add('interacted');
+    soundToggle.classList.toggle('unmuted', soundOn);
+    soundToggle.setAttribute('aria-pressed', String(soundOn));
+    soundToggle.setAttribute('aria-label', soundOn ? 'Mute video' : 'Turn video sound on');
+    if(heroPlayer){ soundOn ? heroPlayer.unMute() : heroPlayer.mute(); }
+  });
+
+  document.getElementById('overlay').addEventListener('click', (e)=>{
+    if(e.target.id==='overlay') e.target.classList.remove('open');
+  });
+
+  const scrollCue = document.querySelector('.scroll-cue');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 80) scrollCue.classList.add('hidden');
+  }, {passive:true});
+
+  /* CALENDAR */
+  const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const TOTAL_DAYS = 365;
+  const WINDOW_SIZE = 28;
+  const STEP = 14;
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const bookedDates = {};
+  bookedDatesList.forEach(b=>{ bookedDates[b.date.toDateString()] = b.label; });
+
+  const days = [];
+  const dayMap = new Map();
+  let monthColorFlip = false;
+  let lastMonthKey = null;
+  for(let i=0;i<TOTAL_DAYS;i++){
+    const d = new Date(today);
+    d.setDate(d.getDate()+i);
+    const monthKey = d.getFullYear()+'-'+d.getMonth();
+    if(monthKey!==lastMonthKey){ monthColorFlip = !monthColorFlip; lastMonthKey = monthKey; }
+    const dayObj = {
+      date:d,
+      offset:i,
+      isSunday:d.getDay()===0,
+      isToday:i===0,
+      booked:bookedDates[d.toDateString()]||null,
+      colorClass: monthColorFlip ? 'light' : 'dark'
+    };
+    days.push(dayObj);
+    dayMap.set(d.toDateString(), dayObj);
+  }
+
+  let windowStart = 0;
+  const calList = document.getElementById('calList');
+  const calPrev = document.getElementById('calPrev');
+  const calNext = document.getElementById('calNext');
+
+  function fmtDate(d){
+    return d.toLocaleDateString('en-CA', {weekday:'short', month:'short', day:'numeric'});
+  }
+
+  function styleFor(day){
+    const isLight = day.colorClass==='light';
+    let bg = isLight ? 'var(--cal-light)' : 'var(--cal-dark)';
+    let textClass = isLight ? 'cal-ink-black' : 'cal-ink-white';
+    let status = 'Open';
+    let extraClass = '';
+    let statusClass = '';
+    if(day.isSunday){
+      bg = 'var(--cal-sunday)'; textClass = 'cal-ink-white';
+      status = 'Unavailable'; extraClass = 'cal-off'; statusClass = 'cal-status-off';
+    } else if(day.booked){
+      status = 'Booked — '+day.booked; extraClass = 'cal-booked'; statusClass = 'cal-status-emph';
+    }
+    return {bg, textClass, status, extraClass, statusClass};
+  }
+
+  function handleOpenClick(day){
+    document.getElementById('prefDate').value = fmtDate(day.date);
+    openOverlay();
+  }
+
+  function renderCalendar(){
+    renderList();
+    renderGrid();
+    calPrev.disabled = windowStart<=0;
+    calNext.disabled = windowStart+STEP > TOTAL_DAYS-WINDOW_SIZE;
+  }
+
+  function renderList(){
+    calList.innerHTML = '';
+    const slice = days.slice(windowStart, windowStart+WINDOW_SIZE);
+    slice.forEach(day=>{
+      const {bg,textClass,status,extraClass,statusClass} = styleFor(day);
+      const row = document.createElement('div');
+      row.className = 'cal-row '+textClass+' '+extraClass;
+      row.style.background = bg;
+      row.innerHTML =
+        '<div class="cal-day-main">'+
+          '<span class="cal-daynum">'+day.date.getDate()+'</span>'+
+          '<span class="cal-dayname">'+DAY_NAMES[day.date.getDay()]+', '+MONTH_NAMES[day.date.getMonth()]+'</span>'+
+          (day.isToday ? '<span class="cal-today-badge">Today</span>' : '')+
+        '</div>'+
+        '<div class="cal-status '+statusClass+'">'+status+'</div>';
+      if(status==='Open'){ row.addEventListener('click', ()=>handleOpenClick(day)); }
+      calList.appendChild(row);
+    });
+  }
+
+  const calGrid = document.getElementById('calGrid');
+
+  function renderGrid(){
+    calGrid.innerHTML = '';
+    const anchorDate = days[windowStart].date;
+    const gridStart = new Date(anchorDate);
+    const dow = gridStart.getDay();
+    const diffToMonday = dow===0 ? -6 : 1-dow;
+    gridStart.setDate(gridStart.getDate() + diffToMonday);
+
+    const weeks = [];
+    for(let w=0; w<4; w++){
+      const weekDates = [];
+      for(let c=0;c<6;c++){
+        const d = new Date(gridStart);
+        d.setDate(d.getDate() + w*7 + c);
+        weekDates.push(d);
+      }
+      weeks.push(weekDates);
+    }
+
+    let lastKey = null;
+    const weekAnchors = {};
+    weeks.forEach((weekDates, w)=>{
+      weekDates.forEach((d,c)=>{
+        const key = d.getFullYear()+'-'+d.getMonth();
+        if(key!==lastKey){
+          if(!weekAnchors[w]) weekAnchors[w] = [];
+          weekAnchors[w].push({col:c, date:d});
+          lastKey = key;
+        }
+      });
+    });
+
+    weeks.forEach((weekDates, w)=>{
+      if(weekAnchors[w]){
+        for(let c=0;c<6;c++){
+          const cell = document.createElement('div');
+          cell.className = 'cal-month-label-cell';
+          const match = weekAnchors[w].find(a=>a.col===c);
+          if(match){
+            cell.textContent = MONTH_NAMES[match.date.getMonth()] +
+              (match.date.getFullYear()!==today.getFullYear() ? ' '+match.date.getFullYear() : '');
+          }
+          calGrid.appendChild(cell);
+        }
+      }
+
+      weekDates.forEach(d=>{
+        const cell = document.createElement('div');
+        if(d.getTime() < today.getTime()){
+          cell.className = 'cal-cell cal-filler';
+          calGrid.appendChild(cell);
+          return;
+        }
+        const day = dayMap.get(d.toDateString());
+        if(!day){
+          cell.className = 'cal-cell cal-filler';
+          calGrid.appendChild(cell);
+          return;
+        }
+        const {bg,textClass,status,extraClass,statusClass} = styleFor(day);
+        cell.className = 'cal-cell '+textClass+' '+extraClass;
+        cell.style.background = bg;
+        cell.innerHTML =
+          '<span class="cal-daynum">'+day.date.getDate()+'</span>'+
+          (day.isToday ? '<span class="cal-today-badge">Today</span>' : '')+
+          '<span class="cal-status '+statusClass+'">'+status+'</span>';
+        if(status==='Open'){ cell.addEventListener('click', ()=>handleOpenClick(day)); }
+        calGrid.appendChild(cell);
+      });
+    });
+  }
+
+  calPrev.addEventListener('click', ()=>{
+    windowStart = Math.max(0, windowStart-STEP);
+    renderCalendar();
+  });
+  calNext.addEventListener('click', ()=>{
+    windowStart = Math.min(TOTAL_DAYS-WINDOW_SIZE, windowStart+STEP);
+    renderCalendar();
+  });
+
+  function openOverlay(){
+    document.getElementById('overlay').classList.add('open');
+    document.getElementById('panelForm').style.display = '';
+    document.getElementById('panelSuccess').classList.remove('show');
+    document.getElementById('formError').classList.remove('show');
+    const btn = document.getElementById('sendRequestBtn');
+    btn.disabled = false;
+    btn.textContent = 'Send request';
+  }
+
+  renderCalendar();
+
+  const sendBtn = document.getElementById('sendRequestBtn');
+  const formError = document.getElementById('formError');
+  const panelForm = document.getElementById('panelForm');
+  const panelSuccess = document.getElementById('panelSuccess');
+
+  sendBtn.addEventListener('click', ()=>{
+    const facName = document.getElementById('facName').value.trim();
+    const facEmail = document.getElementById('facEmail').value.trim();
+    const prefDate = document.getElementById('prefDate').value.trim();
+    const prefShift = document.getElementById('prefShift').value;
+    const piano = document.getElementById('pianoOnSite').value;
+    const mic = document.getElementById('micOnSite').value;
+
+    if(!facName || !facEmail || !prefDate){
+      formError.textContent = 'Please fill in facility name, preferred date, and email.';
+      formError.classList.add('show');
+      return;
+    }
+    formError.classList.remove('show');
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Sending…';
+
+    fetch('https://formsubmit.co/ajax/jamwcam@smokeshadow.net', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({
+        _subject: 'New booking request — '+facName,
+        'Facility name': facName,
+        'Preferred date': prefDate,
+        'Shift': prefShift,
+        'Piano on site': piano || 'not specified',
+        'Microphone': mic || 'not specified',
+        'Contact email': facEmail
+      })
+    })
+    .then(res=>res.json())
+    .then(()=>{
+      panelForm.style.display = 'none';
+      panelSuccess.classList.add('show');
+    })
+    .catch(()=>{
+      formError.textContent = "Something went wrong sending that — try again, or email directly for now.";
+      formError.classList.add('show');
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send request';
+    });
+  });
+</script>
+
+</body>
+</html>
