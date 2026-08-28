@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Live Piano & Vocals for Senior Living Communities</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@300;400;500&display=swap');
 
@@ -589,13 +592,15 @@
      Everything below activates automatically once at least one id is present —
      arrows only appear once there are 2+ real clips to navigate between. */
   const heroClips = [
-    {id:'QkE7pSphups', title:'Clip 1'},
-    {id:'8kFNKUOup14', title:'Clip 2'},
-    {id:'OAjA5cZtm04', title:'Clip 3'}
+    {id:'pz4r18Hxeew', title:'Clip 1'}
+    // Add more clips here later, e.g. {id:'VIDEO_ID', title:'Clip 2'} —
+    // the arrows will reappear automatically once there are 2 or more.
   ];
 
   let heroPlayer = null;
   let activeClipIndex = null;
+  let heroLoopCount = 0;
+  const HERO_MAX_LOOPS = 3;
   const heroSlide = document.getElementById('heroYTSlide');
   const arrowPrev = document.getElementById('heroArrowPrev');
   const arrowNext = document.getElementById('heroArrowNext');
@@ -616,6 +621,7 @@
 
     setTimeout(()=>{
       activeClipIndex = idx;
+      heroLoopCount = 0;
       heroPlayer.loadVideoById(clip.id);
       heroPlayer.mute();
       soundOn = false;
@@ -660,13 +666,29 @@
     const real = realClipIndices();
     if(real.length===0) return;
     activeClipIndex = real[0];
+    heroLoopCount = 0;
     heroSlide.classList.add('show','center');
     heroPlayer = new YT.Player('heroYTPlayer', {
       width:'100%', height:'100%',
       videoId: heroClips[real[0]].id,
-      playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1, loop:1, playlist:heroClips[real[0]].id}
+      playerVars:{autoplay:1, mute:1, controls:0, modestbranding:1, rel:0, playsinline:1},
+      events:{ onStateChange: onHeroPlayerStateChange }
     });
   };
+
+  function onHeroPlayerStateChange(event){
+    if(event.data === YT.PlayerState.ENDED){
+      heroLoopCount++;
+      if(heroLoopCount < HERO_MAX_LOOPS){
+        heroPlayer.seekTo(0);
+        heroPlayer.playVideo();
+      } else {
+        // Played through 3 times total — freeze on the opening frame.
+        heroPlayer.seekTo(0);
+        heroPlayer.pauseVideo();
+      }
+    }
+  }
 
   if(heroClips.some(c=>c.id)){
     const ytTag = document.createElement('script');
