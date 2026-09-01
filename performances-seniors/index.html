@@ -599,9 +599,10 @@
      Everything below activates automatically once at least one id is present —
      arrows only appear once there are 2+ real clips to navigate between. */
   const heroClips = [
-    {id:'pz4r18Hxeew', title:'Clip 1'}
-    // Add more clips here later, e.g. {id:'VIDEO_ID', title:'Clip 2'} —
-    // the arrows will reappear automatically once there are 2 or more.
+    {id:'6pKV884qWuU', title:'Clip 1'},
+    {id:'pz4r18Hxeew', title:'Clip 2'}
+    // Add more clips here later, e.g. {id:'VIDEO_ID', title:'Clip 3'} —
+    // they'll all cycle together in this same order, indefinitely.
   ];
 
   let heroPlayer = null;
@@ -685,14 +686,20 @@
 
   function onHeroPlayerStateChange(event){
     if(event.data === YT.PlayerState.ENDED){
-      heroLoopCount++;
-      if(heroLoopCount < HERO_MAX_LOOPS){
-        heroPlayer.seekTo(0);
-        heroPlayer.playVideo();
+      const real = realClipIndices();
+      if(real.length > 1){
+        // Multiple clips: cycle to the next one, in order, indefinitely.
+        nextClip();
       } else {
-        // Played through 3 times total — freeze on the opening frame.
-        heroPlayer.seekTo(0);
-        heroPlayer.pauseVideo();
+        // Only one clip exists: replay it up to 3 times, then freeze on frame one.
+        heroLoopCount++;
+        if(heroLoopCount < HERO_MAX_LOOPS){
+          heroPlayer.seekTo(0);
+          heroPlayer.playVideo();
+        } else {
+          heroPlayer.seekTo(0);
+          heroPlayer.pauseVideo();
+        }
       }
     }
   }
