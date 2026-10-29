@@ -232,6 +232,31 @@
   </div>
 </header>
 
+<!-- ===================== SONG LINK =====================
+     Shows ONLY when this page is opened from a song shared out of the app
+     (…/jwc-app#n=Song+Name&s=…). The song lives after the "#", which the
+     browser never sends to the server - nothing is stored here.
+     "Open in JWC Chord Teacher" hands the song to the app (jwcchord://open#…). -->
+<section id="jwcSongLink" class="wrap" style="display:none">
+  <div style="max-width:560px;margin:8px auto 0;padding:22px 24px;border-radius:var(--radius);background:var(--bg-card);border:1px solid var(--line-strong);text-align:center">
+    <p style="font-size:15px;font-weight:500;color:var(--ink-soft)">A friend sent you a song</p>
+    <p id="jwcSongLinkName" style="font-family:var(--serif);font-size:28px;line-height:1.2;margin:6px 0 18px;overflow-wrap:anywhere"></p>
+    <a id="jwcSongLinkOpen" href="#" style="display:inline-block;padding:12px 24px;border-radius:12px;background:var(--blue);color:#0d0d0f;font-weight:600;text-decoration:none">Open in JWC Chord Teacher</a>
+    <p style="font-size:14px;margin-top:14px;color:var(--ink-soft)">Don't have the app yet? <a href="https://apps.apple.com/ca/app/jwc-piano-chord-teacher/id6756279798" style="color:var(--blue);font-weight:500">Get it on the App Store</a>, then come back and tap the button above.</p>
+  </div>
+</section>
+<script>
+  (function () {
+    var hash = window.location.hash.replace(/^#/, '');
+    if (!hash) return;
+    var params = new URLSearchParams(hash);
+    if (!params.get('s')) return;
+    document.getElementById('jwcSongLinkName').textContent = params.get('n') || 'Shared song';
+    document.getElementById('jwcSongLinkOpen').href = 'jwcchord://open#' + hash;
+    document.getElementById('jwcSongLink').style.display = 'block';
+  })();
+</script>
+
 <!-- ===================== HERO ===================== -->
 <section class="hero wrap">
   <div class="app-icon"><img src="jwc-logo-square.png" alt="Jam With Cam Piano Chord Teacher app icon" /></div>
