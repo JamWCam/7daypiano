@@ -15,9 +15,10 @@
      >>> THINGS YOU EDIT <<<
      1. App Store link is LIVE (apps.apple.com/ca/.../id6756279798),
         wired into both download blocks. Nothing to do here.
-     2. Android is intentionally a disabled placeholder. When the
-        Android build is live: search  ANDROID_PLACEHOLDER , give the
-        <a> an href, and remove the  is-disabled  class + aria-disabled.
+     2. Android: when the app is PUBLIC on Google Play, change
+        ANDROID_LIVE to true (in the <script> just below <body>). That
+        switches on both Google Play buttons and the Google Play link for
+        song recipients. Until then Android shows "coming soon".
      ============================================================ -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -217,6 +218,10 @@
 </style>
 </head>
 <body>
+<script>
+  // Set to true once the app is PUBLIC on Google Play (not just in testing).
+  var ANDROID_LIVE = false;
+</script>
 
 <!-- ===================== HEADER ===================== -->
 <header class="wrap">
@@ -242,7 +247,9 @@
     <p style="font-size:15px;font-weight:500;color:var(--ink-soft)">A friend sent you a song</p>
     <p id="jwcSongLinkName" style="font-family:var(--serif);font-size:28px;line-height:1.2;margin:6px 0 18px;overflow-wrap:anywhere"></p>
     <a id="jwcSongLinkOpen" href="#" style="display:inline-block;padding:12px 24px;border-radius:12px;background:var(--blue);color:#0d0d0f;font-weight:600;text-decoration:none">Open in JWC Chord Teacher</a>
-    <p style="font-size:14px;margin-top:14px;color:var(--ink-soft)">Don't have the app yet? <a href="https://apps.apple.com/ca/app/jwc-piano-chord-teacher/id6756279798" style="color:var(--blue);font-weight:500">Get it on the App Store</a>, then come back and tap the button above.</p>
+    <p id="jwcSongLinkGet" style="font-size:14px;margin-top:14px;color:var(--ink-soft)">Don't have the app yet? <a href="https://apps.apple.com/ca/app/jwc-piano-chord-teacher/id6756279798" style="color:var(--blue);font-weight:500">Get it on the App Store</a>, then come back and tap the button above.</p>
+    <p id="jwcSongLinkGetAndroid" style="display:none;font-size:14px;margin-top:14px;color:var(--ink-soft)">Don't have the app yet? <a href="https://play.google.com/store/apps/details?id=com.jamwithcam.chordteacher" style="color:var(--blue);font-weight:500">Get it on Google Play</a>, then come back and tap the button above.</p>
+    <p id="jwcSongLinkSoonAndroid" style="display:none;font-size:14px;margin-top:14px;color:var(--ink-soft)">The Android app is coming soon to Google Play. To open this song now, use an iPad or iPhone with the app.</p>
   </div>
 </section>
 <script>
@@ -254,6 +261,10 @@
     document.getElementById('jwcSongLinkName').textContent = params.get('n') || 'Shared song';
     document.getElementById('jwcSongLinkOpen').href = 'jwcchord://open#' + hash;
     document.getElementById('jwcSongLink').style.display = 'block';
+    if (/Android/i.test(navigator.userAgent)) {
+      document.getElementById('jwcSongLinkGet').style.display = 'none';
+      document.getElementById(ANDROID_LIVE ? 'jwcSongLinkGetAndroid' : 'jwcSongLinkSoonAndroid').style.display = 'block';
+    }
   })();
 </script>
 
@@ -283,7 +294,7 @@
 
     <!-- ANDROID_PLACEHOLDER — disabled until the Android build ships.
          When live: add href, remove class "is-disabled" + aria-disabled. -->
-    <a class="store-btn is-disabled" aria-disabled="true" role="link" aria-label="Google Play — coming soon">
+    <a class="store-btn is-disabled android-store-btn" aria-disabled="true" role="link" aria-label="Google Play — coming soon">
       <span class="glyph">
         <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.6 2.3c-.2.2-.3.5-.3.9v17.6c0 .4.1.7.3.9l.1.1L13.5 12v-.1L3.7 2.2l-.1.1zM17 15.3l-3.3-3.3L17 8.7l3.9 2.2c1.1.6 1.1 1.6 0 2.2L17 15.3zM13.5 12.9l3.4 3.4-9.8 5.5c-.5.3-1 .3-1.4 0l7.8-8.9zM5.7 2.2l9.8 5.5-3.4 3.4L4.3 2.2c.4-.3.9-.3 1.4 0z"/>
@@ -352,7 +363,7 @@
 
     <!-- ANDROID_PLACEHOLDER — disabled until the Android build ships.
          When live: add href, remove class "is-disabled" + aria-disabled. -->
-    <a class="store-btn is-disabled" aria-disabled="true" role="link" aria-label="Google Play — coming soon">
+    <a class="store-btn is-disabled android-store-btn" aria-disabled="true" role="link" aria-label="Google Play — coming soon">
       <span class="glyph">
         <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.6 2.3c-.2.2-.3.5-.3.9v17.6c0 .4.1.7.3.9l.1.1L13.5 12v-.1L3.7 2.2l-.1.1zM17 15.3l-3.3-3.3L17 8.7l3.9 2.2c1.1.6 1.1 1.6 0 2.2L17 15.3zM13.5 12.9l3.4 3.4-9.8 5.5c-.5.3-1 .3-1.4 0l7.8-8.9zM5.7 2.2l9.8 5.5-3.4 3.4L4.3 2.2c.4-.3.9-.3 1.4 0z"/>
@@ -371,6 +382,21 @@
 
   <p class="academy-line">Looking to become a 'certified chording pianist' in WEEKS instead of YEARS? <a href="index.html">Be considered for admission</a> into the Jam With Cam Academy. Seating is limited, and we can put you on our waiting list if we're presently full.</p>
 </section>
+
+<script>
+  // ANDROID_LIVE: turn the "Coming soon" Google Play buttons into real links
+  if (ANDROID_LIVE) {
+    document.querySelectorAll('.android-store-btn').forEach(function (a) {
+      a.classList.remove('is-disabled');
+      a.removeAttribute('aria-disabled');
+      a.removeAttribute('role');
+      a.href = 'https://play.google.com/store/apps/details?id=com.jamwithcam.chordteacher';
+      a.setAttribute('aria-label', 'Get it on Google Play');
+      a.querySelector('.small').textContent = 'Get it on';
+    });
+    document.querySelectorAll('.avail-note b').forEach(function (b) { if (/iPad/.test(b.textContent)) b.parentNode.innerHTML = '<b>Available now on iPad, iPhone and Android.</b>'; });
+  }
+</script>
 
 <!-- ===================== FOOTER ===================== -->
 <footer>
