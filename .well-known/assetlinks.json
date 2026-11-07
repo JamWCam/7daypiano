@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.jamwithcam.chordteacher",
+      "sha256_cert_fingerprints": [
+        "8C:D5:90:81:63:CC:DC:6C:F4:F4:05:85:CE:00:48:3C:67:18:59:01:08:D4:62:02:70:92:96:CA:60:03:71:FA",
+        "DF:F4:3F:74:34:03:55:54:09:D7:73:17:AA:CA:C2:C2:5F:54:A6:95:51:30:DB:83:8E:61:E1:F9:1A:F3:AB:D3"
+      ]
+    }
+  }
+]
